@@ -1,0 +1,125 @@
+.reels-container {
+  display: flex;
+  gap: 2.5rem;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+  min-height: calc(100vh - 80px);
+}
+
+.reels-nav-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.reels-nav-btn {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  transition: var(--transition-smooth);
+}
+
+.reels-nav-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--accent-color);
+}
+
+.reels-nav-counter {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.reels-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.reels-sidebar {
+  width: 280px;
+  padding: 1.25rem;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.reels-sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.reels-sidebar-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.reels-sidebar-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.reels-sidebar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.reels-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 12px;
+  transition: var(--transition-smooth);
+  border: 1px solid transparent;
+}
+
+.reels-sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.reels-sidebar-item.active {
+  background: var(--accent-bg-glow);
+  border-color: rgba(168, 85, 247, 0.3);
+}
+
+.reels-sidebar-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.reels-sidebar-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.reels-sidebar-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.reels-sidebar-caption {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
