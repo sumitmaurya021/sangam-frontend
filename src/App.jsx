@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './routes/ProtectedRoute';
+import PublicRoute from './routes/PublicRoute';
+
 import Header from './components/Header/Header';
 import Feed from './components/Feed/Feed';
 import Reels from './components/Reels/Reels';
 
-export default function App() {
+import Login from './pages/Login/Login';
+import Register from './pages/Register/Register';
+
+function MainLayout() {
   const [currentTab, setCurrentTab] = useState('feed');
   const [theme, setTheme] = useState('dark');
   const [unreadCounts, setUnreadCounts] = useState({
@@ -12,7 +21,6 @@ export default function App() {
   });
 
   useEffect(() => {
-    // Set theme attribute on documentElement
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
@@ -22,7 +30,6 @@ export default function App() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* Premium Header */}
       <Header 
         currentTab={currentTab} 
         setCurrentTab={setCurrentTab} 
@@ -30,8 +37,6 @@ export default function App() {
         toggleTheme={toggleTheme}
         unreadCounts={unreadCounts}
       />
-
-      {/* Main Tab Views */}
       <main style={{ flex: 1 }}>
         {currentTab === 'feed' && <Feed />}
         {currentTab === 'reels' && <Reels />}
@@ -52,5 +57,54 @@ export default function App() {
         )}
       </main>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <Toaster 
+          position="top-center"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: 'var(--card-bg)',
+              color: 'var(--text-primary)',
+              backdropFilter: 'blur(16px)',
+              border: '1px solid var(--border-color)',
+            },
+            success: {
+              iconTheme: {
+                primary: 'var(--accent-color)',
+                secondary: '#fff',
+              },
+            },
+          }}
+        />
+        <Routes>
+          <Route path="/login" element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          } />
+          
+          <Route path="/register" element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
+          } />
+          
+          <Route path="/" element={
+            <ProtectedRoute>
+              <MainLayout />
+            </ProtectedRoute>
+          } />
+          
+          {/* Catch all route for undefined routes */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }

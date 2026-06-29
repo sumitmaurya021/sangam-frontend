@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Home, Film, MessageSquare, Bell, Search, Sun, Moon, Sparkles, User, LogOut, Settings } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 import '../../assets/css/Header.css';
 
 export default function Header({ currentTab, setCurrentTab, theme, toggleTheme, unreadCounts = {} }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const { logout, user } = useAuth();
 
   return (
     <header className="glass header-container">
@@ -110,8 +112,8 @@ export default function Header({ currentTab, setCurrentTab, theme, toggleTheme, 
           {showProfileMenu && (
             <div className="glass header-dropdown-menu">
               <div className="header-dropdown-userinfo">
-                <p className="header-dropdown-name">Ananya Sharma</p>
-                <p className="header-dropdown-username">@ananya_sharma</p>
+                <p className="header-dropdown-name">{user?.name || 'User'}</p>
+                <p className="header-dropdown-username">{user?.email || '@user'}</p>
               </div>
               <button className="header-dropdown-item" onClick={() => { setCurrentTab('profile'); setShowProfileMenu(false); }}>
                 <User size={16} /> Profile
@@ -120,7 +122,7 @@ export default function Header({ currentTab, setCurrentTab, theme, toggleTheme, 
                 <Settings size={16} /> Settings
               </button>
               <hr className="header-dropdown-divider" />
-              <button className="header-dropdown-item logout">
+              <button className="header-dropdown-item logout" onClick={logout}>
                 <LogOut size={16} /> Log Out
               </button>
             </div>
