@@ -26,11 +26,17 @@ export default function AuthHero() {
           {/* Post Widget Mockup */}
           <div className="floating-widget widget-post">
             <div className="widget-header">
-              <img 
-                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150" 
-                alt="Avatar" 
-                className="widget-avatar" 
-              />
+              <div style={{ position: 'relative', display: 'inline-block' }}>
+                <img 
+                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150" 
+                  alt="Avatar" 
+                  className="widget-avatar" 
+                />
+                <div className="pulse-dot-container">
+                  <div className="pulse-dot"></div>
+                  <div className="pulse-ring"></div>
+                </div>
+              </div>
               <div>
                 <p className="widget-username">Sarah Jenkins</p>
                 <p className="widget-time">Just now • Creative Director</p>
