@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Home, Film, MessageSquare, Bell, Search, Sun, Moon, Sparkles, User, LogOut, Settings } from 'lucide-react';
+import { Home, Film, MessageSquare, Bell, Search, Sun, Moon, Sparkles, User, LogOut, Settings, Shield } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import '../../assets/css/Header.css';
 
-export default function Header({ currentTab, setCurrentTab, theme, toggleTheme, unreadCounts = {} }) {
+export default function Header({ currentTab, setCurrentTab, theme, toggleTheme, unreadCounts = {}, setSelectedUserId }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const { logout, user } = useAuth();
@@ -103,7 +103,7 @@ export default function Header({ currentTab, setCurrentTab, theme, toggleTheme, 
             className="header-profile-btn"
           >
             <img 
-              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150&h=150" 
+              src={user?.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150&h=150"} 
               alt="User Avatar"
               className="header-profile-avatar"
             />
@@ -115,12 +115,14 @@ export default function Header({ currentTab, setCurrentTab, theme, toggleTheme, 
                 <p className="header-dropdown-name">{user?.name || 'User'}</p>
                 <p className="header-dropdown-username">{user?.email || '@user'}</p>
               </div>
-              <button className="header-dropdown-item" onClick={() => { setCurrentTab('profile'); setShowProfileMenu(false); }}>
+              <button className="header-dropdown-item" onClick={() => { setSelectedUserId(user?.id); setCurrentTab('profile'); setShowProfileMenu(false); }}>
                 <User size={16} /> Profile
               </button>
-              <button className="header-dropdown-item">
-                <Settings size={16} /> Settings
-              </button>
+              {user?.super_admin && (
+                <button className="header-dropdown-item" onClick={() => { setCurrentTab('admin'); setShowProfileMenu(false); }}>
+                  <Shield size={16} color="var(--accent-color)" /> Admin Panel
+                </button>
+              )}
               <hr className="header-dropdown-divider" />
               <button className="header-dropdown-item logout" onClick={logout}>
                 <LogOut size={16} /> Log Out

@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import CreatePost from '../CreatePost/CreatePost';
 import PostCard from '../PostCard/PostCard';
 import { postsApi, socialApi } from '../../api';
-import { Compass, Users, Calendar, Bookmark, History, TrendingUp, HeartHandshake } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
+import { Compass, Users, Calendar, Bookmark, History, TrendingUp, HeartHandshake, ShoppingBag } from 'lucide-react';
 import '../../assets/css/Feed.css';
 
-export default function Feed() {
+export default function Feed({ setCurrentTab, setSelectedUserId }) {
+  const { user } = useAuth();
   const [posts, setPosts] = useState([]);
   const [stories, setStories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -59,48 +61,40 @@ export default function Feed() {
       {/* LEFT COLUMN: Profile and Shortcuts */}
       <aside className="feed-left-col">
         {/* Profile Card */}
-        <div className="glass feed-profile-card">
+        <div 
+          className="glass feed-profile-card" 
+          onClick={() => { setSelectedUserId(user.id); setCurrentTab('profile'); }}
+          style={{ cursor: 'pointer' }}
+        >
           <div className="feed-profile-avatar-wrapper">
             <img 
-              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150&h=150" 
-              alt="Ananya Sharma"
+              src={user?.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150&h=150"} 
+              alt={user?.name || "User Avatar"}
               className="feed-profile-avatar"
             />
           </div>
           <div>
-            <h4 className="feed-profile-name">Ananya Sharma</h4>
-            <span className="feed-profile-title">Product Designer</span>
-          </div>
-          
-          <div className="feed-profile-stats">
-            <div className="feed-profile-stat-box">
-              <p className="feed-profile-stat-val">14.2k</p>
-              <p className="feed-profile-stat-lbl">Followers</p>
-            </div>
-            <div className="feed-profile-stat-divider" />
-            <div className="feed-profile-stat-box">
-              <p className="feed-profile-stat-val">643</p>
-              <p className="feed-profile-stat-lbl">Following</p>
-            </div>
+            <h4 className="feed-profile-name">{user?.name || 'Artifact Creator'}</h4>
+            <span className="feed-profile-title">{user?.email || '@creator'}</span>
           </div>
         </div>
 
         {/* Shortcuts */}
         <div className="glass feed-shortcuts">
-          <button className="feed-shortcut-btn">
-            <Compass size={18} color="var(--accent-color)" /> Explore
+          <button className="feed-shortcut-btn" onClick={() => setCurrentTab('marketplace')}>
+            <ShoppingBag size={18} color="var(--accent-color)" /> Marketplace
           </button>
-          <button className="feed-shortcut-btn">
+          <button className="feed-shortcut-btn" onClick={() => setCurrentTab('groups')}>
             <Users size={18} color="#10b981" /> Groups
           </button>
-          <button className="feed-shortcut-btn">
+          <button className="feed-shortcut-btn" onClick={() => setCurrentTab('events')}>
             <Calendar size={18} color="#3b82f6" /> Events
           </button>
-          <button className="feed-shortcut-btn">
+          <button className="feed-shortcut-btn" onClick={() => setCurrentTab('bookmarks')}>
             <Bookmark size={18} color="#eab308" /> Bookmarks
           </button>
-          <button className="feed-shortcut-btn">
-            <History size={18} color="#f43f5e" /> Memories
+          <button className="feed-shortcut-btn" onClick={() => setCurrentTab('articles')}>
+            <Compass size={18} color="#f43f5e" /> Articles
           </button>
         </div>
       </aside>
@@ -142,7 +136,13 @@ export default function Feed() {
         {/* Posts Feed list */}
         <div className="feed-posts-list">
           {posts.map(post => (
-            <PostCard key={post.id} post={post} onDelete={handlePostDeleted} />
+            <PostCard 
+              key={post.id} 
+              post={post} 
+              onDelete={handlePostDeleted} 
+              setCurrentTab={setCurrentTab}
+              setSelectedUserId={setSelectedUserId}
+            />
           ))}
         </div>
       </main>

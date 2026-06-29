@@ -2,22 +2,21 @@ import axios from 'axios';
 
 // Create a configured axios instance
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000',
+  baseURL: `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'}/api/v1`,
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
   },
-  withCredentials: true // For devise sessions and cookies
+  withCredentials: true
 });
 
-// Add a request interceptor for adding tokens if necessary (e.g. CSRF tokens or Bearer tokens)
+// Add a request interceptor for adding tokens
 apiClient.interceptors.request.use(
   (config) => {
-    // You can read token from localStorage here if using token-based auth
-    // const token = localStorage.getItem('token');
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`;
-    // }
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => {
@@ -29,9 +28,10 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Handle 401 Unauthorized, etc.
     if (error.response && error.response.status === 401) {
-      // e.g. redirect to login or clear user state
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('remember_token');
     }
     return Promise.reject(error);
   }

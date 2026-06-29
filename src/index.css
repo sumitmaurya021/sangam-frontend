@@ -139,11 +139,11 @@ body {
 }
 
 @keyframes pulseGlow {
-  0% { box-shadow: 0 0 5px rgba(168, 85, 247, 0.4); }
-  50% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.8); }
-  100% { box-shadow: 0 0 5px rgba(168, 85, 247, 0.4); }
+  0% { box-shadow: 0 0 6px rgba(168, 85, 247, 0.35); }
+  50% { box-shadow: 0 0 14px rgba(168, 85, 247, 0.65); }
+  100% { box-shadow: 0 0 6px rgba(168, 85, 247, 0.35); }
 }
 
 .pulse-border {
-  animation: pulseGlow 2s infinite ease-in-out;
+  animation: pulseGlow 2.5s infinite ease-in-out;
 }

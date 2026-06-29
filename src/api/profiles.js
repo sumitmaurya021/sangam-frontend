@@ -2,13 +2,14 @@ import apiClient from './client';
 
 export const profilesApi = {
   // Profiles
-  getProfile: (id) => apiClient.get(`/profile/${id}`),
-  getProfileFriends: (id) => apiClient.get(`/profile/${id}/friends`),
-  getProfileFollowing: (id) => apiClient.get(`/profile/${id}/following`),
-  getProfileFollowers: (id) => apiClient.get(`/profile/${id}/followers`),
+  getProfile: (id) => apiClient.get(`/profiles/${id}`),
+  getProfileFriends: (id) => apiClient.get(`/profiles/${id}/friends`),
+  getProfileFollowing: (id) => apiClient.get(`/profiles/${id}/following`),
+  getProfileFollowers: (id) => apiClient.get(`/profiles/${id}/followers`),
   searchProfiles: (params) => apiClient.get(`/profiles/search`, { params }),
   getFriendsList: () => apiClient.get(`/profiles/friends_list`),
   toggleDarkMode: () => apiClient.post(`/profiles/toggle_dark_mode`),
+  updateUser: (id, data) => apiClient.put(`/users/${id}`, { user: data }),
   
   // Follows
   followUser: (id) => apiClient.post(`/follows`, { followee_id: id }),
@@ -19,8 +20,8 @@ export const profilesApi = {
   // Friendships
   sendFriendRequest: (userId) => apiClient.post('/friendships', { friend_id: userId }),
   cancelFriendRequest: (id) => apiClient.delete(`/friendships/${id}`),
-  acceptFriendRequest: (id) => apiClient.patch(`/friendships/${id}/accept`),
-  rejectFriendRequest: (id) => apiClient.patch(`/friendships/${id}/reject`),
+  acceptFriendRequest: (id) => apiClient.post(`/friendships/${id}/accept`),
+  rejectFriendRequest: (id) => apiClient.post(`/friendships/${id}/reject`),
 
   // Close Friends
   getCloseFriends: (userId) => apiClient.get(`/close_friends`, { params: { user_id: userId } }),
@@ -28,7 +29,7 @@ export const profilesApi = {
   removeCloseFriend: (userId, id) => apiClient.delete(`/close_friends/${id}`, { params: { user_id: userId } }),
 
   // Profile Highlights
-  getHighlights: (userId) => apiClient.get(`/users/${userId}/highlights`),
+  getHighlights: (userId) => apiClient.get(`/profile_highlights`, { params: { user_id: userId } }),
   createHighlight: (data) => apiClient.post('/profile_highlights', data),
   updateHighlight: (id, data) => apiClient.put(`/profile_highlights/${id}`, data),
   deleteHighlight: (id) => apiClient.delete(`/profile_highlights/${id}`),

@@ -24,5 +24,10 @@ export const authService = {
   logout: async () => {
     const response = await api.delete('/api/v1/auth/logout');
     return response.data;
+  },
+
+  changePassword: async (data) => {
+    const response = await api.post('/api/v1/auth/change-password', data);
+    return response.data;
   }
 };

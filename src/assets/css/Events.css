@@ -1,0 +1,242 @@
+.events-page-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 20px auto 40px;
+  padding: 0 20px;
+}
+
+.events-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.events-header-row h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  background: var(--accent-glow);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 6px;
+}
+
+.events-header-row p {
+  color: var(--text-secondary);
+}
+
+.create-event-btn {
+  padding: 10px 20px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.event-card {
+  border-radius: 15px;
+  padding: 20px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  display: flex;
+  flex-direction: column;
+  height: 220px;
+}
+
+.event-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-color);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.event-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.event-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--accent-bg-glow);
+  color: var(--accent-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.event-privacy {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.event-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.event-loc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 5px;
+}
+
+.event-date-lbl {
+  font-size: 0.8rem;
+  color: var(--accent-color);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.event-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border-color);
+  padding-top: 12px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Detail Panel CSS */
+.event-detail-panel {
+  border-radius: 20px;
+  padding: 30px;
+}
+
+.event-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.event-large-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  background: var(--accent-bg-glow);
+  color: var(--accent-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.event-detail-header h2 {
+  font-size: 1.6rem;
+  color: var(--text-primary);
+}
+
+.event-time {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.event-desc-section h4 {
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.event-desc-section p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.event-location-txt {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.event-rsvp-actions {
+  border-top: 1px solid var(--border-color);
+  padding-top: 20px;
+}
+
+.event-rsvp-actions h4 {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.rsvp-buttons-row {
+  display: flex;
+  gap: 15px;
+}
+
+.rsvp-btn {
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.02);
+  color: var(--text-primary);
+  transition: var(--transition-smooth);
+}
+
+.rsvp-btn:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+.rsvp-btn.going:hover {
+  border-color: #10b981;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.rsvp-btn.interested:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  background: var(--accent-bg-glow);
+}
+
+.rsvp-btn.not-going:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.events-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px 0;
+  gap: 15px;
+  color: var(--text-secondary);
+}
+
+.events-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px 0;
+  gap: 15px;
+  color: var(--text-muted);
+  text-align: center;
+}

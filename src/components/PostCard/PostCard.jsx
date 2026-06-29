@@ -3,7 +3,7 @@ import { Heart, MessageCircle, Share2, Bookmark, Send, Trash2, Award, ChevronLef
 import { postsApi } from '../../api';
 import '../../assets/css/PostCard.css';
 
-export default function PostCard({ post, onDelete }) {
+export default function PostCard({ post, onDelete, setCurrentTab, setSelectedUserId }) {
   const [liked, setLiked] = useState(post.liked_by_current_user || false);
   const [likeCount, setLikeCount] = useState(post.likes_count || 0);
   const [likeAnimating, setLikeAnimating] = useState(false);
@@ -110,11 +110,18 @@ export default function PostCard({ post, onDelete }) {
 
   const totalPollVotes = Object.values(pollVotes).reduce((sum, v) => sum + v, 0);
 
+  const handleAuthorClick = () => {
+    if (setSelectedUserId && setCurrentTab) {
+      setSelectedUserId(post.user_id || post.user?.id);
+      setCurrentTab('profile');
+    }
+  };
+
   return (
     <article className="glass postcard-container">
       {/* Header */}
       <div className="postcard-header">
-        <div className="postcard-user-area">
+        <div className="postcard-user-area" onClick={handleAuthorClick} style={{ cursor: setSelectedUserId ? 'pointer' : 'default' }}>
           <div className="postcard-avatar-wrapper">
             <img 
               src={post.user?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150&h=150'} 

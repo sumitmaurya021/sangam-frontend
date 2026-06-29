@@ -1,10 +1,13 @@
 .reels-container {
+  width: 100%;
+  max-width: 100%;
   display: flex;
   gap: 2.5rem;
   justify-content: center;
   align-items: center;
-  padding: 2rem 0;
-  min-height: calc(100vh - 80px);
+  margin-top: 20px;
+  padding: 0 20px;
+  min-height: calc(100vh - 120px);
 }
 
 .reels-nav-column {

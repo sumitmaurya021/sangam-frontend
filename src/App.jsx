@@ -12,12 +12,24 @@ import Reels from './components/Reels/Reels';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 
+import UserProfile from './pages/Profile/UserProfile';
+import Marketplace from './pages/Marketplace/Marketplace';
+import Chat from './pages/Chat/Chat';
+import Groups from './pages/Groups/Groups';
+import Events from './pages/Events/Events';
+import Fundraisers from './pages/Fundraisers/Fundraisers';
+import NotificationsPage from './pages/Notifications/NotificationsPage';
+import Articles from './pages/Articles/Articles';
+import Bookmarks from './pages/Bookmarks/Bookmarks';
+import AdminDashboard from './pages/Admin/AdminDashboard';
+
 function MainLayout() {
   const [currentTab, setCurrentTab] = useState('feed');
+  const [selectedUserId, setSelectedUserId] = useState(null);
   const [theme, setTheme] = useState('dark');
   const [unreadCounts, setUnreadCounts] = useState({
-    messages: 3,
-    notifications: 5
+    messages: 0,
+    notifications: 0
   });
 
   useEffect(() => {
@@ -36,25 +48,21 @@ function MainLayout() {
         theme={theme} 
         toggleTheme={toggleTheme}
         unreadCounts={unreadCounts}
+        setSelectedUserId={setSelectedUserId}
       />
       <main style={{ flex: 1 }}>
-        {currentTab === 'feed' && <Feed />}
+        {currentTab === 'feed' && <Feed setCurrentTab={setCurrentTab} setSelectedUserId={setSelectedUserId} />}
         {currentTab === 'reels' && <Reels />}
-        {currentTab === 'chat' && (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh', color: 'var(--text-secondary)' }}>
-            <h3>Chat Panel (Integrates ActionCable / Conversations API)</h3>
-          </div>
-        )}
-        {currentTab === 'notifications' && (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh', color: 'var(--text-secondary)' }}>
-            <h3>Notifications Board</h3>
-          </div>
-        )}
-        {currentTab === 'profile' && (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh', color: 'var(--text-secondary)' }}>
-            <h3>Profile highlights & user detail pages</h3>
-          </div>
-        )}
+        {currentTab === 'chat' && <Chat />}
+        {currentTab === 'notifications' && <NotificationsPage />}
+        {currentTab === 'profile' && <UserProfile userId={selectedUserId} onBackToFeed={() => setCurrentTab('feed')} />}
+        {currentTab === 'groups' && <Groups />}
+        {currentTab === 'events' && <Events />}
+        {currentTab === 'fundraisers' && <Fundraisers />}
+        {currentTab === 'marketplace' && <Marketplace setCurrentTab={setCurrentTab} setSelectedUserId={setSelectedUserId} />}
+        {currentTab === 'articles' && <Articles />}
+        {currentTab === 'bookmarks' && <Bookmarks />}
+        {currentTab === 'admin' && <AdminDashboard />}
       </main>
     </div>
   );

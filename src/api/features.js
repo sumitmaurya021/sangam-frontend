@@ -30,7 +30,7 @@ export const socialApi = {
   createEvent: (data) => apiClient.post('/events', data),
   updateEvent: (id, data) => apiClient.put(`/events/${id}`, data),
   deleteEvent: (id) => apiClient.delete(`/events/${id}`),
-  respondToEvent: (id, response) => apiClient.post(`/events/${id}/respond_to_event`, { response }),
+  respondToEvent: (id, response) => apiClient.post(`/events/${id}/respond`, { response }),
 
   // Bookmarks & Collections
   getBookmarks: (params) => apiClient.get('/bookmarks', { params }),
@@ -45,17 +45,19 @@ export const socialApi = {
   getMemories: () => apiClient.get('/memories'),
 
   // Fundraisers
+  getFundraisers: (params) => apiClient.get('/fundraisers', { params }),
   getFundraiser: (id) => apiClient.get(`/fundraisers/${id}`),
+  createFundraiser: (data) => apiClient.post('/fundraisers', data),
   donateToFundraiser: (id, data) => apiClient.post(`/fundraisers/${id}/donate`, data),
 
   // Marketplace
-  getMarketplaceListings: (params) => apiClient.get('/marketplace', { params }),
-  getMyMarketplaceListings: () => apiClient.get('/marketplace/my_listings'),
-  getMarketplaceListing: (id) => apiClient.get(`/marketplace/${id}`),
-  createMarketplaceListing: (data) => apiClient.post('/marketplace', data),
-  updateMarketplaceListing: (id, data) => apiClient.put(`/marketplace/${id}`, data),
-  deleteMarketplaceListing: (id) => apiClient.delete(`/marketplace/${id}`),
-  markMarketplaceListingSold: (id) => apiClient.patch(`/marketplace/${id}/mark_sold`),
+  getMarketplaceListings: (params) => apiClient.get('/marketplace_listings', { params }),
+  getMyMarketplaceListings: () => apiClient.get('/marketplace_listings/my_listings'),
+  getMarketplaceListing: (id) => apiClient.get(`/marketplace_listings/${id}`),
+  createMarketplaceListing: (data) => apiClient.post('/marketplace_listings', data),
+  updateMarketplaceListing: (id, data) => apiClient.put(`/marketplace_listings/${id}`, data),
+  deleteMarketplaceListing: (id) => apiClient.delete(`/marketplace_listings/${id}`),
+  markMarketplaceListingSold: (id) => apiClient.patch(`/marketplace_listings/${id}/mark_sold`),
 };
 
 export const chatApi = {
@@ -76,7 +78,7 @@ export const chatApi = {
   addGroupChatMember: (id, userId) => apiClient.post(`/group_chats/${id}/add_member`, { user_id: userId }),
   removeGroupChatMember: (id, userId) => apiClient.delete(`/group_chats/${id}/remove_member`, { data: { user_id: userId } }),
   leaveGroupChat: (id) => apiClient.delete(`/group_chats/${id}/leave`),
-  getGroupChatMessages: (id, params) => apiClient.get(`/group_chats/${id}/messages`, { params }),
-  createGroupChatMessage: (id, data) => apiClient.post(`/group_chats/${id}/messages`, data),
-  deleteGroupChatMessage: (id, messageId) => apiClient.delete(`/group_chats/${id}/messages/${messageId}`),
+  getGroupChatMessages: (id, params) => apiClient.get(`/group_chats/${id}/group_chat_messages`, { params }),
+  createGroupChatMessage: (id, data) => apiClient.post(`/group_chats/${id}/group_chat_messages`, data),
+  deleteGroupChatMessage: (id, messageId) => apiClient.delete(`/group_chats/${id}/group_chat_messages/${messageId}`),
 };

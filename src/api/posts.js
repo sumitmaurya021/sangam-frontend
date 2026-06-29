@@ -9,12 +9,12 @@ export const postsApi = {
   deletePost: (id) => apiClient.delete(`/posts/${id}`),
 
   // Post Interactions
-  likePost: (id) => apiClient.post(`/posts/${id}/like`),
-  unlikePost: (id) => apiClient.delete(`/posts/${id}/unlike`),
-  sharePost: (id, data) => apiClient.post(`/posts/${id}/share`, data),
-  bookmarkPost: (id) => apiClient.post(`/posts/${id}/bookmark`),
-  unbookmarkPost: (id) => apiClient.delete(`/posts/${id}/unbookmark`),
-  shareToStory: (id) => apiClient.post(`/posts/${id}/share_to_story`),
+  likePost: (id) => apiClient.post(`/posts/${id}/likes`),
+  unlikePost: (id) => apiClient.delete(`/posts/${id}/likes`),
+  sharePost: (id, data) => apiClient.post(`/posts/${id}/shares`, data),
+  bookmarkPost: (id, type = 'Post') => apiClient.post('/bookmarks', { bookmark: { bookmarkable_id: id, bookmarkable_type: type } }),
+  unbookmarkPost: (bookmarkId) => apiClient.delete(`/bookmarks/${bookmarkId}`),
+  shareToStory: (id) => apiClient.post('/stories/share_to_story', { post_id: id }),
 
   // Post Comments
   createComment: (postId, data) => apiClient.post(`/posts/${postId}/comments`, data),
@@ -31,11 +31,11 @@ export const postsApi = {
   getReels: (params) => apiClient.get('/reels', { params }),
   createReel: (data) => apiClient.post('/reels', data),
   deleteReel: (id) => apiClient.delete(`/reels/${id}`),
-  likeReel: (id) => apiClient.post(`/reels/${id}/like`),
-  unlikeReel: (id) => apiClient.delete(`/reels/${id}/unlike`),
+  likeReel: (id) => apiClient.post(`/reels/${id}/reel_likes`),
+  unlikeReel: (id) => apiClient.delete(`/reels/${id}/reel_likes`),
   viewReel: (id) => apiClient.post(`/reels/${id}/view`),
-  bookmarkReel: (id) => apiClient.post(`/reels/${id}/bookmark_reel`),
-  unbookmarkReel: (id) => apiClient.delete(`/reels/${id}/unbookmark_reel`),
+  bookmarkReel: (id) => apiClient.post('/bookmarks', { bookmark: { bookmarkable_id: id, bookmarkable_type: 'Reel' } }),
+  unbookmarkReel: (bookmarkId) => apiClient.delete(`/bookmarks/${bookmarkId}`),
   
   // Reel Comments
   getReelComments: (reelId, params) => apiClient.get(`/reels/${reelId}/reel_comments`, { params }),
