@@ -151,7 +151,13 @@ export default function Register() {
         {/* Right Column: Interactive Form */}
         <div className="auth-form-panel">
           <div className="auth-form-wrapper" style={{ padding: '2rem 0' }}>
-          <Card>
+            <div className="auth-mobile-logo">
+              <div className="premium-logo-group">
+                <span className="premium-logo-text">Sangam</span>
+                <span className="premium-logo-glow">PREMIUM</span>
+              </div>
+            </div>
+            <Card>
             {!otpStep ? (
               <>
                 <h2 className="auth-card-title" style={{ marginBottom: '0.5rem' }}>Create your account</h2>

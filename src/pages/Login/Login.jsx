@@ -114,7 +114,13 @@ export default function Login() {
         {/* Right Column: Interactive Form */}
         <div className="auth-form-panel">
           <div className="auth-form-wrapper">
-          <Card>
+            <div className="auth-mobile-logo">
+              <div className="premium-logo-group">
+                <span className="premium-logo-text">Sangam</span>
+                <span className="premium-logo-glow">PREMIUM</span>
+              </div>
+            </div>
+            <Card>
             {!otpStep ? (
               <>
                 <h2 className="auth-card-title" style={{ marginBottom: '0.5rem' }}>Welcome back</h2>
