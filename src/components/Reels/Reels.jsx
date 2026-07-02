@@ -1,30 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import ReelCard from '../ReelCard/ReelCard';
+import CreateReelModal from '../CreateReelModal/CreateReelModal';
 import { postsApi } from '../../api';
-import { ChevronUp, ChevronDown, Flame } from 'lucide-react';
+import { ChevronUp, ChevronDown, Flame, Plus } from 'lucide-react';
 import '../../assets/css/Reels.css';
 
 export default function Reels() {
   const [reels, setReels] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+
+  const loadReels = async () => {
+    try {
+      const response = await postsApi.getReels();
+      const fetchedReels = response.data?.data?.reels || response.data?.reels;
+      if (Array.isArray(fetchedReels)) {
+        setReels(fetchedReels);
+      } else {
+        setReels([]);
+      }
+    } catch (err) {
+      console.error('Failed to load reels from API', err);
+      setReels([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    async function loadReels() {
-      try {
-        const response = await postsApi.getReels();
-        if (response.data?.reels && response.data.reels.length > 0) {
-          setReels(response.data.reels);
-        } else {
-          setReels(getSampleReels());
-        }
-      } catch (err) {
-        console.warn('Failed to load reels from API, using premium sample data');
-        setReels(getSampleReels());
-      } finally {
-        setLoading(false);
-      }
-    }
     loadReels();
   }, []);
 
@@ -84,6 +88,14 @@ export default function Reels() {
 
       {/* Info Panel Widget (Right side) */}
       <div className="glass reels-sidebar">
+        <button 
+          onClick={() => setShowCreateModal(true)} 
+          className="glow-btn"
+          style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px', borderRadius: '10px', marginBottom: '1.25rem', fontSize: '0.9rem', fontWeight: 'bold', border: 'none', cursor: 'pointer', background: 'var(--accent-color)', color: '#fff' }}
+        >
+          <Plus size={16} /> Create Reel
+        </button>
+
         <div>
           <div className="reels-sidebar-header">
             <Flame size={18} color="var(--accent-color)" />
@@ -118,62 +130,15 @@ export default function Reels() {
           ))}
         </div>
       </div>
+
+      {showCreateModal && (
+        <CreateReelModal 
+          onClose={() => setShowCreateModal(false)} 
+          onReelCreated={loadReels} 
+        />
+      )}
     </div>
   );
 }
 
-function getSampleReels() {
-  return [
-    {
-      id: 1,
-      caption: "Living the neon dream in Shibuya! 🇯🇵🌌 #cyberpunk #tokyo #nightlife #vibes",
-      likes_count: 842,
-      comments_count: 54,
-      views_count: 14200,
-      user: {
-        id: 10,
-        name: "Rohan Khanna",
-        avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=150&h=150"
-      },
-      video_url: "https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-sign-looking-at-camera-34292-large.mp4",
-      music_title: "Neon Horizon",
-      music_artist: "Tokyo Synthwave",
-      liked_by_current_user: false,
-      bookmarked_by_current_user: false
-    },
-    {
-      id: 2,
-      caption: "A quiet morning in the Swiss Alps. Peace like nowhere else. 🏔️❄️ #switzerland #travel #nature",
-      likes_count: 1205,
-      comments_count: 89,
-      views_count: 23100,
-      user: {
-        id: 11,
-        name: "Ayesha Sen",
-        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150"
-      },
-      video_url: "https://assets.mixkit.co/videos/preview/mixkit-waves-breaking-in-the-sea-from-above-39912-large.mp4",
-      music_title: "Alpine Chillout",
-      music_artist: "Ethereal Echoes",
-      liked_by_current_user: true,
-      bookmarked_by_current_user: true
-    },
-    {
-      id: 3,
-      caption: "Testing out the new camera setup for cinematic portrait reels. Thoughts? 🎥📸 #cinematic #film #camera",
-      likes_count: 432,
-      comments_count: 21,
-      views_count: 5400,
-      user: {
-        id: 12,
-        name: "Kabir Mehta",
-        avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150&h=150"
-      },
-      video_url: "https://assets.mixkit.co/videos/preview/mixkit-young-man-standing-under-neon-light-34290-large.mp4",
-      music_title: "Lofi Retro Beats",
-      music_artist: "ChillHop Collective",
-      liked_by_current_user: false,
-      bookmarked_by_current_user: false
-    }
-  ];
-}
+// Sample reels fallback removed to prioritize actual database reels.

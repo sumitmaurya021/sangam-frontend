@@ -402,7 +402,7 @@ export default function UserProfile({ userId, onBackToFeed }) {
             {userReels.length > 0 ? (
               userReels.map(reel => (
                 <div key={reel.id} className="profile-reel-thumbnail glass">
-                  <video src={reel.video_url} muted preload="metadata" />
+                  <video src={reel.video_url ? (reel.video_url.startsWith('http') ? reel.video_url : `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'}${reel.video_url}`) : ""} muted preload="metadata" />
                   <div className="profile-reel-overlay">
                     <span>❤️ {reel.likes_count}</span>
                     <span>💬 {reel.comments_count}</span>

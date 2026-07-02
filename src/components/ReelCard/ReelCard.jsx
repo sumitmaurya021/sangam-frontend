@@ -99,7 +99,7 @@ export default function ReelCard({ reel, isActive }) {
       {/* Video element */}
       <video
         ref={videoRef}
-        src={reel.video_url || "https://assets.mixkit.co/videos/preview/mixkit-waves-breaking-in-the-sea-from-above-39912-large.mp4"}
+        src={reel.video_url ? (reel.video_url.startsWith('http') ? reel.video_url : `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'}${reel.video_url}`) : "https://assets.mixkit.co/videos/preview/mixkit-waves-breaking-in-the-sea-from-above-39912-large.mp4"}
         loop
         muted={muted}
         playsInline

@@ -303,3 +303,24 @@
   height: 100%;
   background: var(--accent-glow);
 }
+
+/* Responsive Layout Media Queries */
+@media (max-width: 1024px) {
+  .feed-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0 10px;
+    margin-top: 10px;
+    overflow-x: hidden; /* Force zero horizontal scrolling on body */
+  }
+  .feed-left-col,
+  .feed-right-col {
+    display: none;
+  }
+  .feed-stories-tray {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

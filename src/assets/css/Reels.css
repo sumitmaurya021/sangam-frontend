@@ -126,3 +126,16 @@
   overflow: hidden;
   white-space: nowrap;
 }
+
+/* Responsive Reels Layout */
+@media (max-width: 1000px) {
+  .reels-container {
+    gap: 1.5rem;
+    padding: 0 10px;
+    flex-direction: row;
+    min-height: auto;
+  }
+  .reels-sidebar {
+    display: none;
+  }
+}
