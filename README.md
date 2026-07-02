@@ -1,16 +1,60 @@
-# React + Vite
+# Sangam Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sangam is a modern React application built with Vite. It provides a fast, responsive user interface with dynamic components.
 
-Currently, two official plugins are available:
+## 🚀 Technologies Used
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Framework**: [React 19](https://react.dev/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Routing**: [React Router](https://reactrouter.com/)
+- **HTTP Client**: [Axios](https://axios-http.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Notifications**: [React Hot Toast](https://react-hot-toast.com/)
 
-## React Compiler
+## 🛠️ Prerequisites
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Make sure you have Node.js installed on your machine.
 
-## Expanding the ESLint configuration
+## 📦 Installation
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Clone the repository
+2. Navigate into the project directory
+3. Install dependencies using npm:
+
+```bash
+npm install
+```
+
+## 💻 Running the Application
+
+To start the development server with Hot Module Replacement (HMR):
+
+```bash
+npm run dev
+```
+
+The application will typically be available at `http://localhost:5173`.
+
+## 🏗️ Building for Production
+
+To create a production-ready build:
+
+```bash
+npm run build
+```
+
+The built files will be located in the `dist` directory.
+
+To preview the production build locally:
+
+```bash
+npm run preview
+```
+
+## 📝 Linting
+
+To run ESLint and check for code quality issues:
+
+```bash
+npm run lint
+```
