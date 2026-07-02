@@ -51,34 +51,38 @@ export default function UserProfile({ userId, onBackToFeed }) {
     try {
       // 1. Fetch Profile info
       const res = await profilesApi.getProfile(targetId);
-      if (res.data) {
-        setProfileData(res.data);
+      const fetchedProfile = res.data?.data || res.data;
+      if (fetchedProfile && fetchedProfile.user) {
+        setProfileData(fetchedProfile);
         setEditForm({
-          name: res.data.user.name || '',
-          bio: res.data.user.bio || '',
-          location: res.data.user.location || '',
-          website_url: res.data.user.website_url || ''
+          name: fetchedProfile.user.name || '',
+          bio: fetchedProfile.user.bio || '',
+          location: fetchedProfile.user.location || '',
+          website_url: fetchedProfile.user.website_url || ''
         });
       }
 
       // 2. Fetch Posts
       const postsRes = await postsApi.getPosts({ user_id: targetId });
-      if (postsRes.data?.posts) {
-        setUserPosts(postsRes.data.posts);
+      const fetchedPosts = postsRes.data?.data?.posts || postsRes.data?.posts;
+      if (fetchedPosts) {
+        setUserPosts(fetchedPosts);
       }
 
       // 3. Fetch Reels
       const reelsRes = await postsApi.getReels();
-      if (reelsRes.data?.reels) {
-        const filteredReels = reelsRes.data.reels.filter(r => r.user?.id === targetId || r.user_id === targetId);
+      const fetchedReels = reelsRes.data?.data?.reels || reelsRes.data?.reels;
+      if (fetchedReels) {
+        const filteredReels = fetchedReels.filter(r => r.user?.id === targetId || r.user_id === targetId);
         setUserReels(filteredReels);
       }
 
       // 4. Fetch Articles
       const articlesRes = await postsApi.getArticles();
-      if (articlesRes.data) {
-        const filteredArticles = Array.isArray(articlesRes.data) 
-          ? articlesRes.data.filter(a => a.user?.id === targetId || a.user_id === targetId)
+      const fetchedArticles = articlesRes.data?.data || articlesRes.data;
+      if (fetchedArticles) {
+        const filteredArticles = Array.isArray(fetchedArticles) 
+          ? fetchedArticles.filter(a => a.user?.id === targetId || a.user_id === targetId)
           : [];
         setUserArticles(filteredArticles);
       }
@@ -86,20 +90,23 @@ export default function UserProfile({ userId, onBackToFeed }) {
       // 5. Fetch Bookmarks (only if own profile)
       if (isOwnProfile) {
         const bookmarksRes = await postsApi.getPosts();
-        setUserBookmarks(bookmarksRes.data?.posts?.slice(0, 3) || []);
+        const fetchedBookmarks = bookmarksRes.data?.data?.posts || bookmarksRes.data?.posts;
+        setUserBookmarks(fetchedBookmarks?.slice(0, 3) || []);
       }
 
       // 6. Fetch Highlights
       const highlightsRes = await profilesApi.getHighlights(targetId);
-      if (highlightsRes.data) {
-        setHighlights(highlightsRes.data);
+      const fetchedHighlights = highlightsRes.data?.data || highlightsRes.data;
+      if (fetchedHighlights) {
+        setHighlights(fetchedHighlights);
       }
 
       // 7. Check Relationship status
-      if (!isOwnProfile) {
+      if (!isOwnProfile && fetchedProfile && fetchedProfile.user) {
         // Search profiles to get friendship status
-        const searchRes = await profilesApi.searchProfiles({ q: res.data.user.name });
-        const match = searchRes.data?.find(item => item.user.id === targetId);
+        const searchRes = await profilesApi.searchProfiles({ q: fetchedProfile.user.name });
+        const searchResultsList = searchRes.data?.data || searchRes.data;
+        const match = Array.isArray(searchResultsList) ? searchResultsList.find(item => item.user.id === targetId) : null;
         if (match) {
           setFriendshipStatus(match.friendship_status);
           setFriendshipId(match.friendship_id);
@@ -107,12 +114,14 @@ export default function UserProfile({ userId, onBackToFeed }) {
 
         // Check close friend status
         const closeRes = await profilesApi.getCloseFriends(currentUser.id);
-        const isClose = closeRes.data?.some(cf => cf.friend_id === targetId || cf.user_id === targetId);
+        const closeList = closeRes.data?.data || closeRes.data;
+        const isClose = Array.isArray(closeList) ? closeList.some(cf => cf.friend_id === targetId || cf.user_id === targetId) : false;
         setIsCloseFriend(!!isClose);
 
         // Check following
         const followingRes = await profilesApi.getFollowingList();
-        const following = followingRes.data?.some(f => f.id === targetId || f.followee_id === targetId);
+        const followingList = followingRes.data?.data || followingRes.data;
+        const following = Array.isArray(followingList) ? followingList.some(f => f.id === targetId || f.followee_id === targetId) : false;
         setIsFollowing(!!following);
       }
 

@@ -18,10 +18,10 @@ import Chat from './pages/Chat/Chat';
 import Groups from './pages/Groups/Groups';
 import Events from './pages/Events/Events';
 import Fundraisers from './pages/Fundraisers/Fundraisers';
-import NotificationsPage from './pages/Notifications/NotificationsPage';
 import Articles from './pages/Articles/Articles';
 import Bookmarks from './pages/Bookmarks/Bookmarks';
 import AdminDashboard from './pages/Admin/AdminDashboard';
+import { miscApi } from './api';
 
 function MainLayout() {
   const [currentTab, setCurrentTab] = useState('feed');
@@ -32,9 +32,40 @@ function MainLayout() {
     notifications: 0
   });
 
+  const fetchUnreadCounts = async () => {
+    try {
+      const res = await miscApi.getNotificationsDropdown();
+      const data = res.data?.data;
+      if (data) {
+        setUnreadCounts({
+          messages: 0,
+          notifications: data.unread_count || 0
+        });
+      }
+    } catch (err) {
+      console.error("Failed to fetch unread counts", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchUnreadCounts();
+    // Poll unread counts every 15 seconds
+    const interval = setInterval(fetchUnreadCounts, 15000);
+    return () => clearInterval(interval);
+  }, []);
+
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
+
+  // Refetch when tab changes (especially if user views notifications, they get marked read)
+  useEffect(() => {
+    if (currentTab === 'notifications') {
+      setUnreadCounts(prev => ({ ...prev, notifications: 0 }));
+    } else {
+      fetchUnreadCounts();
+    }
+  }, [currentTab]);
 
   const toggleTheme = () => {
     setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
@@ -54,7 +85,6 @@ function MainLayout() {
         {currentTab === 'feed' && <Feed setCurrentTab={setCurrentTab} setSelectedUserId={setSelectedUserId} />}
         {currentTab === 'reels' && <Reels />}
         {currentTab === 'chat' && <Chat />}
-        {currentTab === 'notifications' && <NotificationsPage />}
         {currentTab === 'profile' && <UserProfile userId={selectedUserId} onBackToFeed={() => setCurrentTab('feed')} />}
         {currentTab === 'groups' && <Groups />}
         {currentTab === 'events' && <Events />}
