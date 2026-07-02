@@ -6,8 +6,7 @@ const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
-  },
-  withCredentials: true
+  }
 });
 
 // Add a request interceptor for adding tokens

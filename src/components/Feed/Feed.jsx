@@ -16,22 +16,31 @@ export default function Feed({ setCurrentTab, setSelectedUserId }) {
     async function loadFeedData() {
       try {
         const postsRes = await postsApi.getPosts();
-        const storiesRes = await socialApi.getActiveStories();
-        
-        if (postsRes.data?.posts && postsRes.data.posts.length > 0) {
-          setPosts(postsRes.data.posts);
+        console.log(postsRes);
+
+        // The backend `render_success` wraps the response in { success: true, data: { posts: [...] } }
+        const fetchedPosts = postsRes.data?.data?.posts || postsRes.data?.posts || (Array.isArray(postsRes.data?.data) ? postsRes.data.data : null) || (Array.isArray(postsRes.data) ? postsRes.data : null);
+        if (fetchedPosts) {
+          setPosts(fetchedPosts);
         } else {
           setPosts(getSamplePosts());
         }
+      } catch (err) {
+        console.error('Feed error: Failed to fetch posts', err);
+        setPosts(getSamplePosts());
+      }
 
-        if (storiesRes.data?.stories && storiesRes.data.stories.length > 0) {
-          setStories(storiesRes.data.stories);
+      try {
+        const storiesRes = await socialApi.getActiveStories();
+        // The backend `render_success` wraps active stories in { success: true, data: [...] }
+        const fetchedStories = storiesRes.data?.data?.stories || storiesRes.data?.stories || (Array.isArray(storiesRes.data?.data) ? storiesRes.data.data : null) || (Array.isArray(storiesRes.data) ? storiesRes.data : null);
+        if (fetchedStories) {
+          setStories(fetchedStories);
         } else {
           setStories(getSampleStories());
         }
       } catch (err) {
-        console.warn('API call failed, using mock data for feed components');
-        setPosts(getSamplePosts());
+        console.error('Feed error: Failed to fetch stories', err);
         setStories(getSampleStories());
       } finally {
         setLoading(false);
@@ -61,14 +70,14 @@ export default function Feed({ setCurrentTab, setSelectedUserId }) {
       {/* LEFT COLUMN: Profile and Shortcuts */}
       <aside className="feed-left-col">
         {/* Profile Card */}
-        <div 
-          className="glass feed-profile-card" 
+        <div
+          className="glass feed-profile-card"
           onClick={() => { setSelectedUserId(user.id); setCurrentTab('profile'); }}
           style={{ cursor: 'pointer' }}
         >
           <div className="feed-profile-avatar-wrapper">
-            <img 
-              src={user?.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150&h=150"} 
+            <img
+              src={user?.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150&h=150"}
               alt={user?.name || "User Avatar"}
               className="feed-profile-avatar"
             />
@@ -116,9 +125,9 @@ export default function Feed({ setCurrentTab, setSelectedUserId }) {
             <div key={story.id} className="feed-story-item">
               <div className="pulse-border feed-story-bubble">
                 <div className="feed-story-avatar-wrapper">
-                  <img 
-                    src={story.user?.avatar} 
-                    alt={story.user?.name} 
+                  <img
+                    src={story.user?.avatar}
+                    alt={story.user?.name}
                     className="feed-story-avatar"
                   />
                 </div>
@@ -136,10 +145,10 @@ export default function Feed({ setCurrentTab, setSelectedUserId }) {
         {/* Posts Feed list */}
         <div className="feed-posts-list">
           {posts.map(post => (
-            <PostCard 
-              key={post.id} 
-              post={post} 
-              onDelete={handlePostDeleted} 
+            <PostCard
+              key={post.id}
+              post={post}
+              onDelete={handlePostDeleted}
               setCurrentTab={setCurrentTab}
               setSelectedUserId={setSelectedUserId}
             />

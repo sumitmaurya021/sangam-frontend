@@ -4,7 +4,7 @@ export const postsApi = {
   // Posts
   getPosts: (params) => apiClient.get('/posts', { params }),
   getPost: (id) => apiClient.get(`/posts/${id}`),
-  createPost: (data) => apiClient.post('/posts', data), // Use FormData if file uploads are involved
+  createPost: (data) => apiClient.post('/posts', data),
   updatePost: (id, data) => apiClient.put(`/posts/${id}`, data),
   deletePost: (id) => apiClient.delete(`/posts/${id}`),
 

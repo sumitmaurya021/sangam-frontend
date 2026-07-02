@@ -56,18 +56,43 @@ export default function CreatePost({ onPostCreated }) {
       };
     }
 
-    onPostCreated(newPostData);
-
     try {
       const payload = {
         post: {
-          content,
+          content: content || (imagePlaceholder ? `[Image: ${imagePlaceholder}]` : ''),
           visibility,
         }
       };
-      await postsApi.createPost(payload);
+
+      if (showPollForm && pollQuestion) {
+        payload.post.poll_attributes = {
+          question: pollQuestion,
+          poll_options_attributes: pollOptions.filter(opt => opt.trim() !== '').map((opt, index) => ({
+            body: opt,
+            position: index + 1
+          }))
+        };
+      }
+
+      if (showFundraiserForm && fundraiserTitle && fundraiserGoal) {
+        payload.post.fundraiser_attributes = {
+          title: fundraiserTitle,
+          description: fundraiserDesc,
+          goal_amount: parseFloat(fundraiserGoal) || 1000,
+        };
+      }
+
+      const res = await postsApi.createPost(payload);
+      
+      // The backend returns the newly created post with a real ID
+      if (res.data && res.data.data) {
+        onPostCreated(res.data.data);
+      } else {
+        onPostCreated(newPostData);
+      }
     } catch (err) {
       console.warn('API call failed, falling back to local UI state');
+      onPostCreated(newPostData);
     }
 
     setContent('');

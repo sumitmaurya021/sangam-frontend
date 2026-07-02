@@ -27,7 +27,19 @@ export default function PostCard({ post, onDelete, setCurrentTab, setSelectedUse
   const [donationValue, setDonationValue] = useState('');
   const [isDonating, setIsDonating] = useState(false);
 
-  const images = post.images || (post.image_url ? [post.image_url] : []);
+  let displayContent = post.content;
+  let extractedImageUrl = null;
+  if (typeof displayContent === 'string') {
+    const imageMatch = displayContent.match(/\[Image: (.*?)\]/);
+    if (imageMatch) {
+      extractedImageUrl = imageMatch[1];
+      displayContent = displayContent.replace(imageMatch[0], '').trim();
+    }
+  }
+
+  const images = (post.images && post.images.length > 0) ? post.images : 
+                 (post.image_url ? [post.image_url] : 
+                 (extractedImageUrl ? [extractedImageUrl] : []));
 
   const handleLike = async () => {
     setLikeAnimating(true);
@@ -149,9 +161,11 @@ export default function PostCard({ post, onDelete, setCurrentTab, setSelectedUse
       </div>
 
       {/* Caption Content */}
-      <p className="postcard-caption">
-        {post.content || 'Designing the future of decentralized networks. Here is a sneak peek into the Sangam ecosystem! ✨'}
-      </p>
+      {displayContent && (
+        <p className="postcard-caption">
+          {displayContent}
+        </p>
+      )}
 
       {/* Images Carousel */}
       {images.length > 0 && (
